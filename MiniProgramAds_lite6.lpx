@@ -1,0 +1,43 @@
+#!name = 去广告 Lite6
+#!desc = 微信原生广告素材改用复写拦截（绕开 [Rule] 被 GEOIP 抢先的问题）；JSON 轮播沿用已验证的 reject-dict。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:42:00
+
+# ============================================================
+# 与 lite5 的差别
+#
+# lite5 只处理了 JSON 轮播（已验证生效）。
+# 但你截图里的广告是微信原生广告组件（角标"广告"+下载按钮），
+# 素材走 wxs*.wxs.qq.com，靠 [Rule] 拦，而 [Rule] 被
+# GEOIP,cn,DIRECT 抢在前面，一条都没执行。
+#
+# 这里全部改成复写：复写在 HTTP 层，不受规则优先级影响。
+# reject-img 返回 1x1 像素图，比直接断连温和，不会让布局崩。
+# ============================================================
+
+[Rewrite]
+
+# 微信广告素材（原生模板 / 激励视频 / 缩略图）
+^https?:\/\/wxsnsdy\.wxs\.qq\.com\/ reject-img
+^https?:\/\/wxsnsdythumb\.wxs\.qq\.com\/ reject-img
+^https?:\/\/wxsmsdy\.video\.qq\.com\/ reject-img
+^https?:\/\/wxsmw\.wxs\.qq\.com\/ reject-img
+
+# 广点通素材分发（阿里/腾讯系投放的图片与视频落地页素材）
+^https?:\/\/[^\/]*gdtimg\.com\/ reject-img
+^https?:\/\/pgdt\.gtimg\.cn\/ reject-img
+^https?:\/\/pgdt\.gtimg\.com\/ reject-img
+
+# 多人签 首页轮播 JSON（lite5 已验证）
+^https:\/\/xxtpy\.lovegcu\.xyz\/api\/home\/content reject-dict
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz, wxsnsdy.wxs.qq.com, wxsnsdythumb.wxs.qq.com, wxsmsdy.video.qq.com, wxsmw.wxs.qq.com, *.gdtimg.com, pgdt.gtimg.cn, pgdt.gtimg.com
