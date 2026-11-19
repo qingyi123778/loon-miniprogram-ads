@@ -1,0 +1,31 @@
+#!name = 去广告 Lite 脚本版
+#!desc = 用 http-response 脚本清空 banner，绕开 response-body-json-* 的版本兼容问题。验证成功后合并回完整版。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:28:00
+
+# ============================================================
+# 与 lite 版的唯一区别: 用 [Script] 取代 [Rewrite]
+#
+# 为什么换:
+#   response-body-json-replace 需要 Loon Build 729+ 且语法敏感，
+#   参数值写成 [] 可能整条被丢弃且无任何提示。
+#   脚本走 JS 逻辑，只要响应体被 MitM 解开就一定能改。
+#
+# 判断标准:
+#   生效 -> 说明之前是 json 语法问题，把脚本段合并回完整版即可
+#   不生效 -> 说明 MitM 没真正解开这个域名，跟语法无关
+# ============================================================
+
+[Script]
+http-response ^https:\/\/xxtpy\.lovegcu\.xyz\/api\/home\/content script-path = https://raw.githubusercontent.com/qingyi123778/loon-miniprogram-ads/main/scripts/miniprogram_banner.js, requires-body = true, tag = 多人签去banner
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz
