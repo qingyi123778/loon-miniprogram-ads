@@ -1,0 +1,27 @@
+#!name = 去广告 Lite3
+#!desc = 脚本改从 jsDelivr 拉取（国内可达），排除 raw.githubusercontent.com 拉不到导致脚本不执行的干扰。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:31:00
+
+# ============================================================
+# lite3 与 lite2 的唯一差别: 脚本地址换成 jsDelivr
+#
+# 排查逻辑:
+#   Loon 下载脚本用的是它自己的网络，raw.githubusercontent.com
+#   在国内经常拉不动，脚本没下来就等于没配。
+#   jsDelivr 已验证可达（915B / application/javascript）。
+# ============================================================
+
+[Script]
+http-response ^https:\/\/xxtpy\.lovegcu\.xyz\/api\/home\/content script-path = https://cdn.jsdelivr.net/gh/qingyi123778/loon-miniprogram-ads@main/scripts/miniprogram_banner.js, requires-body = true, tag = 多人签去banner
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz
