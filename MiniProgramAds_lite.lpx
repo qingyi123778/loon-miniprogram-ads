@@ -1,0 +1,29 @@
+#!name = 去广告 Lite 测试
+#!desc = 只含一条多人签规则，用来验证 MitM + Rewrite 链路是否通。验证成功后换回完整版。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:25:00
+
+# ============================================================
+# 验证用最小插件
+# 目的：把变量降到最少，单独确认这条 Rewrite 到底能不能执行
+#   [Rule]    1 条 —— 微信激励视频素材，域名层拦截，不需要 MitM
+#   [Rewrite] 1 条 —— 多人签首页 banner，需要 MitM
+#   [MitM]    1 个域名 —— 短到不可能被截断
+# ============================================================
+
+[Rule]
+DOMAIN, wxsmw.wxs.qq.com, REJECT
+
+[Rewrite]
+^https:\/\/xxtpy\.lovegcu\.xyz\/api\/home\/content response-body-json-replace data.banners []
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz
