@@ -1,0 +1,35 @@
+#!name = 去广告 Lite5 探测
+#!desc = 破坏性测试：直接 reject-dict 返回 {}。用来判断规则到底有没有被加载执行。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:37:00
+
+# ============================================================
+# 这一版不做"优雅修改"，只做判断。
+#
+# [Rewrite] 用旧语法，但严格不带空格：
+#   script-path=xxx,requires-body=true   <- 等号两侧不能有空格
+# 之前几版写成 "script-path = xxx, requires-body = true"，
+# 参数解析失败会导致整条规则被静默丢弃。
+#
+# 预期结果（三种，互斥）：
+#   A. 日志里该请求的下载大小从 1.27KB 变成极小的几字节
+#      -> 规则生效，之前是脚本文件拉不到 / 脚本内容问题
+#   B. 小程序首页报错或 banner 变成空白
+#      -> 规则生效，只是 { } 结构前端不认，改回 json 保留结构即可
+#   C. 完全没变化，仍是 1.27KB，仍只有 GEOIP,cn,DIRECT
+#      -> 规则压根没被加载（插件段落丢失 / 版本不兼容）
+# ============================================================
+
+[Rewrite]
+^https:\/\/xxtpy\.lovegcu\.xyz\/api\/home\/content reject-dict
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz
