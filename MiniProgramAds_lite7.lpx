@@ -1,0 +1,33 @@
+#!name = 去广告 Lite7 规则层
+#!desc = 纯域名拦截，无 MitM、无复写。用来验证插件 [Rule] 是否被 GEOIP,cn,DIRECT 抢先。
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.2.1(745)
+#!date = 2026-11-19 15:44:00
+
+# ============================================================
+# 这一版故意只做域名拦截:
+#   - 没有 [MitM]  -> 不解密，不会触发微信证书校验，不会闪退
+#   - 没有 [Rewrite] / [Script] -> 排除一切语法因素
+#
+# 唯一的验证目标:
+#   插件里的 [Rule] 到底会不会被主配置的 GEOIP,cn,DIRECT 抢先。
+#
+# 判断方法:
+#   装好后打开小程序，看请求记录 HTTP/S 里
+#   wxsmw.wxs.qq.com 这类连接显示的规则是 REJECT 还是 GEOIP
+#     REJECT   -> 插件规则优先级正常，之前是我误判
+#     GEOIP    -> 确认被抢先，只能在主配置最前面手动加，或放弃这层
+# ============================================================
+
+[Rule]
+DOMAIN, wxsmw.wxs.qq.com, REJECT
+DOMAIN, wxsnsdy.wxs.qq.com, REJECT
+DOMAIN, wxsnsdythumb.wxs.qq.com, REJECT
+DOMAIN, wxsmsdy.video.qq.com, REJECT
