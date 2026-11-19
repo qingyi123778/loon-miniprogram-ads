@@ -1,0 +1,32 @@
+#!name = 去广告 Lite4
+#!desc = 改用 Loon 3.5.1(983)+ 新版 Script 语法：response if ${url} ~= /.../ then script("...") with ...
+#!author = c4
+#!homepage = 
+#!icon = 
+#!openUrl = 
+#!category = 去广告
+#!tag = 小程序, 测试
+#!system = iOS, iPadOS
+#!system_version = 
+#!loon_version = 3.5.1(983)
+#!date = 2026-11-19 15:34:00
+
+# ============================================================
+# 与前几版的根本差别: 语法世代
+#
+# 旧语法(3.5.1 983 之前):
+#   http-response ^https:\/\/... script-path=xx.js, requires-body=true, tag=xx
+#   等号两侧不能有空格，参数用连字符 requires-body
+#
+# 新语法(983+):
+#   response if ${url} ~= /regex/ then script("xx.js") with tag="xx", requires_body=true
+#   下划线 requires_body；Response Script 必须带 URL Guard
+#
+# 之前几版全部用旧语法且写了空格，参数解析失败 -> 整条规则静默丢弃
+# ============================================================
+
+[Script]
+response if ${url} ~= /xxtpy\.lovegcu\.xyz\/api\/home\/content/ then script("https://cdn.jsdelivr.net/gh/qingyi123778/loon-miniprogram-ads@main/scripts/miniprogram_banner.js") with tag="多人签去banner", requires_body=true
+
+[MitM]
+hostname = xxtpy.lovegcu.xyz
